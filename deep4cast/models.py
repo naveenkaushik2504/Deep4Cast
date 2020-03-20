@@ -95,7 +95,7 @@ class WaveNet(torch.nn.Module):
         # Regularization
         regularizer = reg_e + reg_d
 
-        return {'df': output_df, 'loc': output_mean, 'scale': output_std, 'regularizer': regularizer}
+        return {'loc': output_mean, 'scale': output_std, 'regularizer': regularizer}
 
     def encode(self, inputs: torch.Tensor):
         """Returns embedding vectors.
