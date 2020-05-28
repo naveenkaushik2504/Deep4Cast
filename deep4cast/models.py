@@ -108,7 +108,7 @@ class WaveNet(torch.nn.Module):
         # output, res_conv_input = self.do_conv_input(inputs)
         # output = self.conv_input(output)
         m = torch.nn.Dropout(p=0.5)
-        inputs = m(inputs)
+        # inputs = m(inputs)
         output = self.conv_input(inputs)
         res_conv_input = 0.0
 
@@ -118,7 +118,7 @@ class WaveNet(torch.nn.Module):
             layer_in = output
             # output, reg = do(layer_in)
             # output = conv(output)
-            layer_in = m(layer_in)
+            # layer_in = m(layer_in)
             output = conv(layer_in)
             reg = 0.0
             output = torch.nn.functional.relu(output)
