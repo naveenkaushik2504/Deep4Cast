@@ -106,16 +106,14 @@ class WaveNet(torch.nn.Module):
         """
         # Input layer
         output, res_conv_input = self.do_conv_input(inputs)
-        # res_conv_input = 0.0
-        output = self.conv_input(inputs)
+        output = self.conv_input(output)
 
         # Loop over WaveNet layers and blocks
         regs, skip_connections = [], []
         for do, conv, skip, resi in zip(self.do, self.conv, self.skip, self.resi):
             layer_in = output
             output, reg = do(layer_in)
-            # reg = 0.0
-            output = conv(layer_in)
+            output = conv(output)
             output = torch.nn.functional.relu(output)
             skip = skip(output)
             output = resi(output)
@@ -129,7 +127,6 @@ class WaveNet(torch.nn.Module):
 
         # Nonlinear output layers
         output, res_conv_post = self.do_conv_post(output)
-        # res_conv_post = 0.0
         output = torch.nn.functional.relu(output)
         output = self.conv_post(output)
         output = torch.nn.functional.relu(output)
