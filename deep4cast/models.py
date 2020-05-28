@@ -105,15 +105,19 @@ class WaveNet(torch.nn.Module):
 
         """
         # Input layer
-        output, res_conv_input = self.do_conv_input(inputs)
-        output = self.conv_input(output)
+        # output, res_conv_input = self.do_conv_input(inputs)
+        # output = self.conv_input(output)
+        output = self.conv_input(inputs)
+        res_conv_input = 0.0
 
         # Loop over WaveNet layers and blocks
         regs, skip_connections = [], []
         for do, conv, skip, resi in zip(self.do, self.conv, self.skip, self.resi):
             layer_in = output
-            output, reg = do(layer_in)
-            output = conv(output)
+            # output, reg = do(layer_in)
+            # output = conv(output)
+            output = conv(layer_in)
+            reg = 0.0
             output = torch.nn.functional.relu(output)
             skip = skip(output)
             output = resi(output)
@@ -126,7 +130,8 @@ class WaveNet(torch.nn.Module):
         output = sum([s[:, :, -output.size(2):] for s in skip_connections])
 
         # Nonlinear output layers
-        output, res_conv_post = self.do_conv_post(output)
+        # output, res_conv_post = self.do_conv_post(output)
+        res_conv_post = 0.0
         output = torch.nn.functional.relu(output)
         output = self.conv_post(output)
         output = torch.nn.functional.relu(output)
@@ -148,9 +153,11 @@ class WaveNet(torch.nn.Module):
 
         """
         # Apply dense layer to match output length
-        output_mean, res_linear_mean = self.do_linear_mean(inputs)
-        output_std, res_linear_std = self.do_linear_std(inputs)
-        output_df, res_linear_df = self.do_linear_df(inputs)
+        # output_mean, res_linear_mean = self.do_linear_mean(inputs)
+        # output_std, res_linear_std = self.do_linear_std(inputs)
+        # output_df, res_linear_df = self.do_linear_df(inputs)
+        output_mean = output_std = output_df = inputs
+        res_linear_mean = res_linear_std = res_linear_df = 0.0
         output_mean = self.linear_mean(output_mean)
         output_std = self.linear_std(output_std).exp()
         output_df = self.linear_df(output_df).exp()
