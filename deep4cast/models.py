@@ -107,7 +107,7 @@ class WaveNet(torch.nn.Module):
         # Input layer
         # output, res_conv_input = self.do_conv_input(inputs)
         # output = self.conv_input(output)
-        m = torch.nn.Dropout(p=0.7)
+        m = torch.nn.Dropout(p=0.5)
         inputs = m(inputs)
         output = self.conv_input(inputs)
         res_conv_input = 0.0
@@ -162,7 +162,7 @@ class WaveNet(torch.nn.Module):
         # output_df, res_linear_df = self.do_linear_df(inputs)
         # output_mean = output_std = output_df = inputs
         res_linear_mean = res_linear_std = res_linear_df = 0.0
-        m = torch.nn.Dropout(p=0.7)
+        m = torch.nn.Dropout(p=0.5)
         output_mean = m(inputs)
         output_std = m(inputs)
         output_df = m(inputs)
